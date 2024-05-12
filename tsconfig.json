@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+        "noUnusedParameters": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "noUnusedLocals": true,
+        "removeComments": true,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "strict": true,
+        "target": "ES2022",
+        "outDir": "dist",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext"
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "dist"]
+}
