@@ -1,6 +1,6 @@
 {
     "name": "fastify-playground",
-    "description": "A playground for Fastify",
+    "description": "A playground for Learning Fastify",
     "author": "Margus Liinev",
     "main": "dist/server.js",
     "version": "1.0.0",
@@ -10,15 +10,20 @@
         "dev": "tsx watch --clear-screen=false ./src/server.ts",
         "build": "tsc",
         "start": "node dist/server.js",
+        "lint": "eslint . --fix",
         "format": "prettier . --write",
-        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix"
+        "check": "prettier . --check && eslint ."
     },
     "dependencies": {
         "fastify": "^4.27.0"
     },
     "devDependencies": {
         "@types/node": "^20.12.11",
-        "tsx": "^4.10.1",
+        "@typescript-eslint/eslint-plugin": "^7.8.0",
+        "@typescript-eslint/parser": "^7.8.0",
+        "eslint": "^8.57.0",
+        "prettier": "^3.2.5",
+        "tsx": "^4.10.2",
         "typescript": "^5.4.5"
     }
 }
