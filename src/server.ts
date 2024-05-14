@@ -1,9 +1,11 @@
-import Fastify from 'fastify';
+import { build } from './app.js';
 
-const app = Fastify();
+const opts = {
+    logger: {
+        level: 'info'
+    }
+};
 
-app.get('/', function handler() {
-    return { hello: 'world' };
-});
+const app = await build(opts);
 
 await app.listen({ port: 5000 });
