@@ -1,11 +1,22 @@
-import { build } from './app.js';
+import build from './app.js';
 
-const opts = {
-    logger: {
-        level: 'info'
-    }
+const envToLogger = {
+    development: {
+        transport: {
+            target: 'pino-pretty',
+            options: {
+                translateTime: 'HH:MM:ss Z',
+                ignore: 'pid,hostname'
+            }
+        }
+    },
+    production: true,
+    test: false
 };
 
-const app = await build(opts);
+const app = build({
+    logger: envToLogger[process.env.NODE_ENV as keyof typeof envToLogger],
+    ignoreTrailingSlash: true
+});
 
 await app.listen({ port: 5000 });

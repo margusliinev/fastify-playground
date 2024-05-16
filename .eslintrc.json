@@ -5,5 +5,5 @@
     "parser": "@typescript-eslint/parser",
     "parserOptions": { "project": true },
     "plugins": ["@typescript-eslint"],
-    "ignorePatterns": ["node_modules", "dist"]
+    "ignorePatterns": ["node_modules", "dist", "jest.config.ts"]
 }
