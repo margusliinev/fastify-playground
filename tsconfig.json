@@ -12,9 +12,9 @@
         "strict": true,
         "outDir": "dist",
         "target": "ES2022",
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext"
+        "module": "node16",
+        "moduleResolution": "node16"
     },
-    "include": ["src", "tests"],
+    "include": ["src"],
     "exclude": ["node_modules", "dist"]
 }

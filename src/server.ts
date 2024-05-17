@@ -1,22 +1,24 @@
-import build from './app.js';
+import Fastify from 'fastify';
+import dotenv from 'dotenv';
+import taskRoutes from './routes/tasks.js';
+dotenv.config();
 
 const envToLogger = {
-    development: {
-        transport: {
-            target: 'pino-pretty',
-            options: {
-                translateTime: 'HH:MM:ss Z',
-                ignore: 'pid,hostname'
-            }
-        }
-    },
-    production: true,
-    test: false
+    development: false,
+    production: true
 };
 
-const app = build({
-    logger: envToLogger[process.env.NODE_ENV as keyof typeof envToLogger],
-    ignoreTrailingSlash: true
-});
+const app = Fastify({ logger: envToLogger[process.env.NODE_ENV as keyof typeof envToLogger] });
 
-await app.listen({ port: 5000 });
+await app.register(taskRoutes, { prefix: '/api/tasks' });
+
+const start = async () => {
+    try {
+        await app.listen({ port: 5000 });
+    } catch (err) {
+        app.log.error('Error starting server:', err);
+        process.exit(1);
+    }
+};
+
+await start();
