@@ -9,6 +9,7 @@
         "isolatedModules": true,
         "noUnusedLocals": true,
         "skipLibCheck": true,
+        "allowJs": true,
         "strict": true,
         "outDir": "dist",
         "target": "ES2022",

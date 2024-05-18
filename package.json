@@ -12,11 +12,20 @@
         "start": "node dist/server.js",
         "lint": "eslint . --fix",
         "format": "prettier . --write",
-        "check": "prettier . --check && eslint . --max-warnings 0"
+        "check": "prettier . --check && eslint . --max-warnings 0",
+        "knex": "tsx ./node_modules/.bin/knex",
+        "migrate:make": "npm run knex -- migrate:make --knexfile=./src/db/knexfile.ts",
+        "migrate:up": "npm run knex -- migrate:latest --knexfile=./src/db/knexfile.ts",
+        "migrate:down": "npm run knex -- migrate:down --knexfile=./src/db/knexfile.ts",
+        "migrate:rollback": "npm run knex -- migrate:rollback --knexfile=./src/db/knexfile.ts",
+        "seed:make": "npm run knex -- seed:make --knexfile=./src/db/knexfile.ts",
+        "seed:run": "npm run knex -- seed:run --knexfile=./src/db/knexfile.ts"
     },
     "dependencies": {
         "dotenv": "^16.4.5",
-        "fastify": "^4.27.0"
+        "fastify": "^4.27.0",
+        "knex": "^3.1.0",
+        "mysql2": "^3.9.7"
     },
     "devDependencies": {
         "@types/node": "^20.12.12",
