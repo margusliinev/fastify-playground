@@ -22,6 +22,7 @@
         "seed:run": "npm run knex -- seed:run --knexfile=./src/db/knexfile.ts"
     },
     "dependencies": {
+        "@fastify/one-line-logger": "^1.3.0",
         "fastify": "^4.27.0",
         "knex": "^3.1.0",
         "mysql2": "^3.9.7"
