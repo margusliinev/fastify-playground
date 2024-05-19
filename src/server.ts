@@ -10,7 +10,7 @@ const envToLogger = {
 
 const app = Fastify({ logger: envToLogger[process.env.NODE_ENV as keyof typeof envToLogger] });
 
-await app.register(UsersRoute, { prefix: '/api/tasks' });
+await app.register(UsersRoute, { prefix: '/api/users' });
 
 const start = async () => {
     try {

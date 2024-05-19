@@ -1,6 +1,6 @@
 import { FastifyInstance, RegisterOptions, HookHandlerDoneFunction } from 'fastify';
-import { User } from '../types/types.js';
-import db from '../db/knex.js';
+import { User } from '@/types/types.js';
+import db from '../db/index.js';
 
 function UsersRoute(app: FastifyInstance, _opts: RegisterOptions, done: HookHandlerDoneFunction) {
     app.get('/', async (_request, reply) => {
