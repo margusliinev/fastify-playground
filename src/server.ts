@@ -1,7 +1,7 @@
-import Fastify from 'fastify';
 import dotenv from 'dotenv';
-import taskRoutes from './routes/tasks.js';
 dotenv.config();
+import Fastify from 'fastify';
+import UsersRoute from './routes/users.js';
 
 const envToLogger = {
     development: false,
@@ -10,7 +10,7 @@ const envToLogger = {
 
 const app = Fastify({ logger: envToLogger[process.env.NODE_ENV as keyof typeof envToLogger] });
 
-await app.register(taskRoutes, { prefix: '/api/tasks' });
+await app.register(UsersRoute, { prefix: '/api/tasks' });
 
 const start = async () => {
     try {

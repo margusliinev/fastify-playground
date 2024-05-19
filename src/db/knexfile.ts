@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-dotenv.config();
 import type { Knex } from 'knex';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -7,9 +6,18 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const envPath = resolve(__dirname, '../../.env');
+dotenv.config({ path: envPath });
+
 const config: Knex.Config = {
     client: 'mysql2',
-    connection: process.env.DATABASE_URL,
+    connection: {
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        port: parseInt(process.env.DB_PORT || '3306')
+    },
     migrations: {
         tableName: 'knex_migrations',
         directory: resolve(__dirname, './migrations'),
