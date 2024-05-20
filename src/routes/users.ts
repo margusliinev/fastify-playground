@@ -1,5 +1,5 @@
 import { FastifyInstance, RegisterOptions, HookHandlerDoneFunction } from 'fastify';
-import { User } from '@/types/types.js';
+import { User } from '@/utils/types.js';
 import db from '../db/index.js';
 
 function UsersRoute(app: FastifyInstance, _opts: RegisterOptions, done: HookHandlerDoneFunction) {

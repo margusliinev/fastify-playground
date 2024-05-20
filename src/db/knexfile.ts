@@ -1,20 +1,16 @@
 import type { Knex } from 'knex';
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { env } from 'node:process';
 
 const config: Knex.Config = {
     client: 'mysql2',
-    connection: process.env.DATABASE_URL,
+    connection: env.DATABASE_URL,
     migrations: {
         tableName: 'knex_migrations',
-        directory: resolve(__dirname, './migrations'),
+        directory: './migrations',
         loadExtensions: ['.ts']
     },
     seeds: {
-        directory: resolve(__dirname, './seeds'),
+        directory: './seeds',
         loadExtensions: ['.ts']
     }
 };

@@ -1,4 +1,4 @@
-const env = process.env.NODE_ENV || 'development';
+import { env } from 'node:process';
 
 const config = {
     development: {
@@ -14,4 +14,4 @@ const config = {
     }
 };
 
-export default config[env as 'development' | 'production'];
+export default config[env.NODE_ENV as 'development' | 'production'];
