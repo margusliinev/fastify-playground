@@ -3,7 +3,15 @@ import config from './config/logger.js';
 import usersRouter from './routes/users.js';
 import closeWithGrace from 'close-with-grace';
 import dbConnector from './plugins/dbConnector.js';
+import autoLoad from '@fastify/autoload';
+import swagger from '@fastify/swagger';
+import swaggerUI from '@fastify/swagger-ui';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import { env } from 'node:process';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = Fastify({ logger: config.logger });
 
@@ -17,6 +25,9 @@ app.setNotFoundHandler(async (request, reply) => {
     await reply.code(404).send({ success: false, message: 'Route Not Found' });
 });
 
+await app.register(swagger);
+await app.register(swaggerUI, { routePrefix: '/docs', uiConfig: { docExpansion: 'full' } });
+await app.register(autoLoad, { dir: join(__dirname, 'routes') });
 await app.register(dbConnector);
 await app.register(usersRouter, { prefix: '/api/users' });
 
