@@ -13,7 +13,7 @@
         "lint": "eslint . --fix",
         "format": "prettier . --write",
         "check": "prettier . --check && eslint . --max-warnings 0",
-        "knex": "tsx ./node_modules/.bin/knex",
+        "knex": "tsx --env-file=.env ./node_modules/.bin/knex",
         "migrate:make": "npm run knex -- migrate:make --knexfile=./src/db/knexfile.ts",
         "migrate:up": "npm run knex -- migrate:latest --knexfile=./src/db/knexfile.ts",
         "migrate:down": "npm run knex -- migrate:down --knexfile=./src/db/knexfile.ts",
