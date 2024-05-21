@@ -1,13 +1,12 @@
-import { FastifyInstance, RegisterOptions, HookHandlerDoneFunction } from 'fastify';
-import { User } from '@/utils/types.js';
-import db from '../db/index.js';
+import type { FastifyInstance, FastifyPluginOptions } from 'fastify';
+import { User } from '@/types/index.js';
 
-function UsersRoute(app: FastifyInstance, _opts: RegisterOptions, done: HookHandlerDoneFunction) {
+function usersRouter(app: FastifyInstance, _opts: FastifyPluginOptions, done: Function) {
     app.get('/', async (_request, reply) => {
-        const users = await db.select<User[]>('*').from('users');
-        await reply.send(users);
+        const users = await app.db.select<User[]>('*').from('users');
+        await reply.send({ success: true, data: users });
     });
     done();
 }
 
-export default UsersRoute;
+export default usersRouter;

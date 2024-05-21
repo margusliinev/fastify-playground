@@ -15,9 +15,8 @@
         "target": "ES2022",
         "module": "node16",
         "moduleResolution": "node16",
-        "paths": {
-            "@/*": ["./src/*"]
-        }
+        "types": ["node", "fastify"],
+        "paths": { "@/*": ["./src/*"] }
     },
     "include": ["src"],
     "exclude": ["node_modules", "dist"]
