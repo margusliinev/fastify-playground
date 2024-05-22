@@ -1,17 +1,12 @@
 import Fastify from 'fastify';
-import loggerConfig from './config/logger.js';
-import swaggerConfig from './config/swagger.js';
-import closeWithGrace from 'close-with-grace';
-import dbConnector from './plugins/dbConnector.js';
 import autoLoad from '@fastify/autoload';
 import swagger from '@fastify/swagger';
 import swaggerUI from '@fastify/swagger-ui';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import loggerConfig from './config/logger.js';
+import swaggerConfig from './config/swagger.js';
+import dbConnector from './plugins/dbConnector.js';
+import closeWithGrace from 'close-with-grace';
 import { env } from 'node:process';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const app = Fastify({ logger: loggerConfig });
 
@@ -26,13 +21,22 @@ app.setNotFoundHandler(async (request, reply) => {
 });
 
 await app.register(swagger, swaggerConfig);
-await app.register(swaggerUI, { routePrefix: '/docs' });
+await app.register(swaggerUI, { prefix: '/docs' });
 await app.register(dbConnector);
-await app.register(autoLoad, { options: { prefix: '/api' }, dir: join(__dirname, 'routes') });
+await app.register(autoLoad, { options: { prefix: '/api' }, dir: './src/routes' });
+
+closeWithGrace(async function ({ signal, err }) {
+    if (err) {
+        app.log.error({ err }, 'server closing with error');
+    } else {
+        app.log.info(`${signal} received, server closing`);
+    }
+    await app.close();
+});
 
 const start = async () => {
     try {
-        const PORT = Number(env.PORT) || 5000;
+        const PORT = Number(env.PORT) || 3000;
         const HOST = env.HOST || 'localhost';
         const NODE_ENV = env.NODE_ENV || 'development';
 
@@ -43,14 +47,5 @@ const start = async () => {
         process.exit(1);
     }
 };
-
-closeWithGrace(async function ({ signal, err }) {
-    if (err) {
-        app.log.error({ err }, 'server closing with error');
-    } else {
-        app.log.info(`${signal} received, server closing`);
-    }
-    await app.close();
-});
 
 await start();
