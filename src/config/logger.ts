@@ -2,7 +2,7 @@ import { env } from 'node:process';
 
 const NODE_ENV = (env.NODE_ENV as 'development' | 'production') || 'development';
 
-const config = {
+const loggerConfig = {
     development: {
         logger: {
             transport: {
@@ -16,4 +16,4 @@ const config = {
     }
 };
 
-export default config[NODE_ENV];
+export default loggerConfig[NODE_ENV].logger;
