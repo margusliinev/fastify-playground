@@ -4,7 +4,6 @@ import swagger from '@fastify/swagger';
 import swaggerUI from '@fastify/swagger-ui';
 import loggerConfig from './config/logger.js';
 import swaggerConfig from './config/swagger.js';
-import dbConnector from './plugins/dbConnector.js';
 import closeWithGrace from 'close-with-grace';
 import { env } from 'node:process';
 
@@ -22,8 +21,8 @@ app.setNotFoundHandler(async (request, reply) => {
 
 await app.register(swagger, swaggerConfig);
 await app.register(swaggerUI, { prefix: '/docs' });
-await app.register(dbConnector);
-await app.register(autoLoad, { options: { prefix: '/api' }, dir: './src/routes' });
+await app.register(autoLoad, { dir: './src/plugins' });
+await app.register(autoLoad, { dir: './src/routes' });
 
 closeWithGrace(async function ({ signal, err }) {
     if (err) {
