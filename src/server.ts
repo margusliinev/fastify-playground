@@ -10,7 +10,7 @@ import { env } from 'node:process';
 const app = Fastify({ logger: loggerConfig });
 
 app.setErrorHandler(async (error, request, reply) => {
-    request.log.error({ message: error.message, stack: error.stack });
+    request.log.error({ message: error.message, stack: error.stack }, error.message);
     await reply.code(error.statusCode || 500).send({ success: false, message: error.message });
 });
 
