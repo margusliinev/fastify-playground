@@ -7,6 +7,13 @@ declare module 'fastify' {
     }
 }
 
+export enum DealStatus {
+    OPEN = 'open',
+    WON = 'won',
+    LOST = 'lost',
+    DELETED = 'deleted'
+}
+
 export interface User {
     id: number;
     username: string;
@@ -14,4 +21,18 @@ export interface User {
     password: string;
     created_at: Date;
     updated_at: Date;
+}
+
+export interface Deal {
+    id: number;
+    title: string;
+    status: DealStatus;
+    user_id: number;
+    project_id: number;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface UserWithDeals extends User {
+    deals: Deal[];
 }
