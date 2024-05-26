@@ -49,4 +49,10 @@ const postUsersSchema = {
     }
 } as const;
 
-export { getUsersSchema, postUsersSchema };
+const getSingleUserWithDealsSchema = {
+    schema: {
+        tags: tag
+    }
+};
+
+export { getUsersSchema, postUsersSchema, getSingleUserWithDealsSchema };

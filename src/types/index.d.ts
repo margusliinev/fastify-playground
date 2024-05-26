@@ -8,10 +8,10 @@ declare module 'fastify' {
 }
 
 export enum DealStatus {
-    OPEN = 'open',
-    WON = 'won',
-    LOST = 'lost',
-    DELETED = 'deleted'
+    OPEN = 'OPEN',
+    WON = 'WON',
+    LOST = 'LOST',
+    DELETED = 'DELETED'
 }
 
 export interface User {

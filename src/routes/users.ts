@@ -1,5 +1,5 @@
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify';
-import { getUsersSchema, postUsersSchema } from '@/schemas/userSchemas.js';
+import { getSingleUserWithDealsSchema, getUsersSchema, postUsersSchema } from '@/schemas/userSchemas.js';
 import { User, UserWithDeals } from '@/types/index.js';
 
 function usersRouter(app: FastifyInstance, _opts: FastifyPluginOptions, done: Function) {
@@ -15,7 +15,7 @@ function usersRouter(app: FastifyInstance, _opts: FastifyPluginOptions, done: Fu
         await reply.code(201).send({ success: true, data: newUser });
     });
 
-    app.get('/api/users/:id/deals', async (request, reply) => {
+    app.get('/api/users/:id/deals', getSingleUserWithDealsSchema, async (request, reply) => {
         const { id } = request.params as { id: string };
         const results = await app.db
             .select(
