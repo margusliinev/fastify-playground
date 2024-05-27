@@ -56,3 +56,8 @@ export interface Project {
 export interface UserWithDeals extends User {
     deals: Deal[];
 }
+
+export interface ProjectWithUsersAndDeals extends Project {
+    users: Users[];
+    deals: Deal[];
+}

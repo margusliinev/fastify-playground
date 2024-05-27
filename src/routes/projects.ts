@@ -1,6 +1,6 @@
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify';
 import { getProjectsSchema, getSingleProjectSchema, postProjectsSchema } from '@/schemas/projectSchemas.js';
-import { Project } from '@/types/index.js';
+import { Project, ProjectWithUsersAndDeals } from '@/types/index.js';
 
 function projectsRouter(app: FastifyInstance, _opts: FastifyPluginOptions, done: Function) {
     app.get('/api/projects', getProjectsSchema, async (_request, reply) => {
@@ -19,10 +19,12 @@ function projectsRouter(app: FastifyInstance, _opts: FastifyPluginOptions, done:
         const { id } = request.params as { id: string };
         const project = await app.db
             .select(
-                'users.id as user_id',
+                'users.id',
                 'users.username',
                 'users.email',
                 'users.password',
+                'users.created_at as user_created_at',
+                'users.updated_at as user_updated_at',
                 'projects.id as project_id',
                 'projects.title as project_title',
                 'projects.description as project_description',
@@ -30,10 +32,14 @@ function projectsRouter(app: FastifyInstance, _opts: FastifyPluginOptions, done:
                 'projects.end_date as project_end_date',
                 'projects.status as project_status',
                 'projects.is_archived',
+                'projects.created_at as project_created_at',
+                'projects.updated_at as project_updated_at',
                 'deals.id as deal_id',
                 'deals.title as deal_title',
                 'deals.status as deal_status',
-                'deals.user_id'
+                'deals.user_id',
+                'deals.created_at as deal_created_at',
+                'deals.updated_at as deal_created_at'
             )
             .from('users_projects')
             .where('users_projects.project_id', Number(id))
@@ -41,7 +47,7 @@ function projectsRouter(app: FastifyInstance, _opts: FastifyPluginOptions, done:
             .leftJoin('users', 'users.id', 'users_projects.user_id')
             .leftJoin('deals', 'deals.project_id', 'projects.id');
 
-        const projectWithUsersAndDeals = {
+        const projectWithUsersAndDeals: ProjectWithUsersAndDeals = {
             id: project[0].project_id,
             title: project[0].project_title,
             description: project[0].project_description,
@@ -49,27 +55,29 @@ function projectsRouter(app: FastifyInstance, _opts: FastifyPluginOptions, done:
             end_date: project[0].project_end_date,
             status: project[0].project_status,
             is_archived: project[0].is_archived,
+            created_at: project[0].project_created_at,
+            updated_at: project[0].project_updated_at,
             users: project
-                .filter((result) => result.user_id)
-                .map((result) => {
-                    return {
-                        id: result.user_id,
-                        username: result.username,
-                        email: result.email,
-                        password: result.password
-                    };
-                }),
+                .map((result) => ({
+                    id: result.id,
+                    username: result.username,
+                    email: result.email,
+                    password: result.password,
+                    created_at: result.user_created_at,
+                    updated_at: result.user_updated_at
+                }))
+                .filter((user, index, self) => index === self.findIndex((t) => t.id === user.id)),
             deals: project
-                .filter((result) => result.deal_id)
-                .map((result) => {
-                    return {
-                        id: result.deal_id,
-                        title: result.deal_title,
-                        status: result.deal_status,
-                        user_id: result.user_id,
-                        project_id: result.project_id
-                    };
-                })
+                .map((result) => ({
+                    id: result.deal_id,
+                    title: result.deal_title,
+                    status: result.deal_status,
+                    user_id: result.user_id,
+                    project_id: result.project_id,
+                    created_at: result.deal_created_at,
+                    updated_at: result.deal_updated_at
+                }))
+                .filter((deal, index, self) => index === self.findIndex((t) => t.id === deal.id))
         };
         await reply.code(200).send({ success: true, data: projectWithUsersAndDeals });
     });
